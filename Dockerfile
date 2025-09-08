@@ -10,8 +10,8 @@ COPY . /app
 # Install the required Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port the app runs on
+# Expose the port (default for local dev, Render overrides with $PORT)
 EXPOSE 5000
 
-# Command to run the application using Gunicorn
-CMD ["gunicorn", "-b", "0.0.0.0:$PORT", "app:app"]
+# Run the app with Gunicorn in production
+CMD gunicorn -b 0.0.0.0:$PORT app:app
