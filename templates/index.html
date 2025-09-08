@@ -33,7 +33,13 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Chest Pain Type (cp) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'cp')" onmouseleave="hideDescription()">?</button></label>
-            <input type="number" class="form-control" name="cp" min="0" max="3" required value="{{ form_data.get('cp', '') }}">
+            <select class="form-select" name="cp" required>
+                <option value="" disabled selected>- Select -</option>
+                <option value="0" {% if form_data.get('cp') == '0' %}selected{% endif %}>Typical angina</option>
+                <option value="1" {% if form_data.get('cp') == '1' %}selected{% endif %}>Atypical angina</option>
+                <option value="2" {% if form_data.get('cp') == '2' %}selected{% endif %}>Non-anginal pain</option>
+                <option value="3" {% if form_data.get('cp') == '3' %}selected{% endif %}>Asymptomatic</option>
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Resting Blood Pressure (trestbps) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'trestbps')" onmouseleave="hideDescription()">?</button></label>
@@ -47,8 +53,8 @@
             <label class="form-label">Fasting Blood Sugar > 120 mg/dl (fbs) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'fbs')" onmouseleave="hideDescription()">?</button></label>
             <select class="form-select" name="fbs" required>
                 <option value="" disabled selected>- Select -</option>
-                <option value="1" {% if form_data.get('fbs') == '1' %}selected{% endif %}>True</option>
-                <option value="0" {% if form_data.get('fbs') == '0' %}selected{% endif %}>False</option>
+                <option value="1" {% if form_data.get('fbs') == '1' %}selected{% endif %}>Yes</option>
+                <option value="0" {% if form_data.get('fbs') == '0' %}selected{% endif %}>No</option>
             </select>
         </div>
         <div class="mb-3">
