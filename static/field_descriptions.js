@@ -30,3 +30,13 @@ function hideDescription() {
     var tooltip = document.getElementById('descTooltip');
     tooltip.style.display = 'none';
 }
+
+document.getElementById('predictForm').addEventListener('reset', function(event) {
+    event.preventDefault(); // Prevent default reset behavior
+    const form = event.target;
+    Array.from(form.elements).forEach(element => {
+        if (element.type === 'number' || element.type === 'text') {
+            element.value = '';
+        }
+    });
+});
