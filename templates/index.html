@@ -3,36 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <title>Heart Disease Risk Prediction</title>
-        <style>
-            body { font-family: Arial, sans-serif; margin: 40px; }
-            .container { max-width: 500px; margin: auto; }
-            input, select { width: 100%; padding: 8px; margin: 6px 0; }
-            button { padding: 10px 20px; margin-right: 10px; }
-            .result { margin-top: 20px; font-size: 1.2em; }
-            .desc-btn { background: #eee; border: none; color: #007bff; cursor: pointer; font-size: 1em; margin-left: 5px; }
-        </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f8f9fa; }
+        .container { max-width: 540px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); padding: 32px 28px; }
+        .form-label { font-weight: 500; }
+        .desc-btn { background: none; border: none; color: #0d6efd; cursor: pointer; font-size: 1em; margin-left: 5px; padding: 0; }
+        .result { margin-top: 24px; font-size: 1.2em; background: #e9f7ef; border-radius: 8px; padding: 16px; border: 1px solid #b2dfdb; }
+        h2 { text-align: center; margin-bottom: 28px; font-weight: 700; color: #0d6efd; }
+        .btn-primary, .btn-secondary { min-width: 120px; }
+        .desc-tooltip {
+            position: absolute;
+            z-index: 1000;
+            background: #fff;
+            color: #333;
+            border: 1px solid #b2dfdb;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 10px 16px;
+            min-width: 220px;
+            font-size: 0.98em;
+            display: none;
+        }
+    </style>
     <script src="/static/field_descriptions.js"></script>
+    <!-- Bootstrap JS (for modal, if needed) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="container">
     <h2>Heart Disease Risk Prediction</h2>
     <form method="post" id="predictForm" autocomplete="off">
-            <label>Age <button type="button" class="desc-btn" onclick="showDescription('age')">?</button></label><input type="number" name="age" required value="{{ form_data.get('age', '') }}">
-            <label>Sex (1=Male, 0=Female) <button type="button" class="desc-btn" onclick="showDescription('sex')">?</button></label><input type="number" name="sex" min="0" max="1" required value="{{ form_data.get('sex', '') }}">
-            <label>Chest Pain Type (cp) <button type="button" class="desc-btn" onclick="showDescription('cp')">?</button></label><input type="number" name="cp" min="0" max="3" required value="{{ form_data.get('cp', '') }}">
-            <label>Resting Blood Pressure (trestbps) <button type="button" class="desc-btn" onclick="showDescription('trestbps')">?</button></label><input type="number" name="trestbps" required value="{{ form_data.get('trestbps', '') }}">
-            <label>Cholesterol (chol) <button type="button" class="desc-btn" onclick="showDescription('chol')">?</button></label><input type="number" name="chol" required value="{{ form_data.get('chol', '') }}">
-            <label>Fasting Blood Sugar > 120 mg/dl (fbs) <button type="button" class="desc-btn" onclick="showDescription('fbs')">?</button></label><input type="number" name="fbs" min="0" max="1" required value="{{ form_data.get('fbs', '') }}">
-            <label>Resting ECG (restecg) <button type="button" class="desc-btn" onclick="showDescription('restecg')">?</button></label><input type="number" name="restecg" min="0" max="2" required value="{{ form_data.get('restecg', '') }}">
-            <label>Max Heart Rate (thalach) <button type="button" class="desc-btn" onclick="showDescription('thalach')">?</button></label><input type="number" name="thalach" required value="{{ form_data.get('thalach', '') }}">
-            <label>Exercise Induced Angina (exang) <button type="button" class="desc-btn" onclick="showDescription('exang')">?</button></label><input type="number" name="exang" min="0" max="1" required value="{{ form_data.get('exang', '') }}">
-            <label>Oldpeak <button type="button" class="desc-btn" onclick="showDescription('oldpeak')">?</button></label><input type="number" step="any" name="oldpeak" required value="{{ form_data.get('oldpeak', '') }}">
-            <label>Slope <button type="button" class="desc-btn" onclick="showDescription('slope')">?</button></label><input type="number" name="slope" min="0" max="2" required value="{{ form_data.get('slope', '') }}">
-            <label>CA (Number of major vessels) <button type="button" class="desc-btn" onclick="showDescription('ca')">?</button></label><input type="number" name="ca" min="0" max="3" required value="{{ form_data.get('ca', '') }}">
-            <label>Thal <button type="button" class="desc-btn" onclick="showDescription('thal')">?</button></label><input type="number" name="thal" min="0" max="3" required value="{{ form_data.get('thal', '') }}">
-            <button type="submit">Predict</button>
-            <button type="submit" name="reset" value="1">Reset</button>
-        </form>
+        <div class="mb-3">
+            <label class="form-label">Age <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'age')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="age" required value="{{ form_data.get('age', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Sex (1=Male, 0=Female) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'sex')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="sex" min="0" max="1" required value="{{ form_data.get('sex', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Chest Pain Type (cp) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'cp')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="cp" min="0" max="3" required value="{{ form_data.get('cp', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Resting Blood Pressure (trestbps) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'trestbps')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="trestbps" required value="{{ form_data.get('trestbps', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Cholesterol (chol) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'chol')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="chol" required value="{{ form_data.get('chol', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Fasting Blood Sugar > 120 mg/dl (fbs) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'fbs')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="fbs" min="0" max="1" required value="{{ form_data.get('fbs', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Resting ECG (restecg) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'restecg')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="restecg" min="0" max="2" required value="{{ form_data.get('restecg', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Max Heart Rate (thalach) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'thalach')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="thalach" required value="{{ form_data.get('thalach', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Exercise Induced Angina (exang) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'exang')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="exang" min="0" max="1" required value="{{ form_data.get('exang', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Oldpeak <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'oldpeak')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" step="any" class="form-control" name="oldpeak" required value="{{ form_data.get('oldpeak', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Slope <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'slope')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="slope" min="0" max="2" required value="{{ form_data.get('slope', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">CA (Number of major vessels) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'ca')" onmouseleave="hideDescription()">?</button></label>
+            <input type="number" class="form-control" name="ca" min="0" max="3" required value="{{ form_data.get('ca', '') }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Thal <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'thal')" onmouseleave="hideDescription()">?</button></label>
+    <div id="descTooltip" class="desc-tooltip"></div>
+            <input type="number" class="form-control" name="thal" min="0" max="3" required value="{{ form_data.get('thal', '') }}">
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-primary">Predict</button>
+            <button type="submit" name="reset" value="1" class="btn btn-secondary">Reset</button>
+        </div>
+    </form>
     {% if show_prediction %}
     <div class="result">
         <strong>Prediction:</strong> {{ label }}<br>

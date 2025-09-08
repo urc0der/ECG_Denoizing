@@ -14,6 +14,19 @@ const fieldDescriptions = {
     thal: "Thalassemia (0-3): 0 = unknown, 1 = normal, 2 = fixed defect, 3 = reversible defect."
 };
 
-function showDescription(field) {
-    alert(fieldDescriptions[field]);
+function showDescription(event, field) {
+    var desc = fieldDescriptions[field] || "No description available.";
+    var tooltip = document.getElementById('descTooltip');
+    tooltip.innerHTML = desc;
+    tooltip.style.display = 'block';
+    var rect = event.target.getBoundingClientRect();
+    var scrollY = window.scrollY || window.pageYOffset;
+    // Position to the immediate left of the button
+    tooltip.style.left = (rect.left - tooltip.offsetWidth - 8) + 'px';
+    tooltip.style.top = (rect.top + scrollY) + 'px';
+}
+
+function hideDescription() {
+    var tooltip = document.getElementById('descTooltip');
+    tooltip.style.display = 'none';
 }
