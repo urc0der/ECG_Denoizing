@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
 def load_model_and_features():
-    df = pd.read_csv('../heart.csv').dropna()
+    df = pd.read_csv('./dataset/heart.csv').dropna()
     df = pd.get_dummies(df, drop_first=True)
     X = df.drop('target', axis=1)
     y = df['target']
