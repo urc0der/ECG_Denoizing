@@ -67,7 +67,6 @@ This project uses three datasets to train and evaluate machine learning models f
   - XGBoost: ![D3-XG](plots/d3-xg.png)
 
 ## Results
-
-- The results of the model evaluations are presented in the form of graphs.
-- These graphs highlight the performance of each model on the three datasets.
-- Based on the results, the most suitable dataset and model were selected for predicting heart disease risk.
+- Dataset-1 is chosen for making predictions due to its large volume and better model performance
+- Random Forest model has been implemented on Dataset-1 due to its consistent performance
+- Most important features were identified cooresponding to this model
