@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Heart Disease Risk Prediction</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 40px; }
+            .container { max-width: 500px; margin: auto; }
+            input, select { width: 100%; padding: 8px; margin: 6px 0; }
+            button { padding: 10px 20px; margin-right: 10px; }
+            .result { margin-top: 20px; font-size: 1.2em; }
+            .desc-btn { background: #eee; border: none; color: #007bff; cursor: pointer; font-size: 1em; margin-left: 5px; }
+        </style>
+    <script src="/static/field_descriptions.js"></script>
+</head>
+<body>
+<div class="container">
+    <h2>Heart Disease Risk Prediction</h2>
+    <form method="post" id="predictForm" autocomplete="off">
+            <label>Age <button type="button" class="desc-btn" onclick="showDescription('age')">?</button></label><input type="number" name="age" required value="{{ form_data.get('age', '') }}">
+            <label>Sex (1=Male, 0=Female) <button type="button" class="desc-btn" onclick="showDescription('sex')">?</button></label><input type="number" name="sex" min="0" max="1" required value="{{ form_data.get('sex', '') }}">
+            <label>Chest Pain Type (cp) <button type="button" class="desc-btn" onclick="showDescription('cp')">?</button></label><input type="number" name="cp" min="0" max="3" required value="{{ form_data.get('cp', '') }}">
+            <label>Resting Blood Pressure (trestbps) <button type="button" class="desc-btn" onclick="showDescription('trestbps')">?</button></label><input type="number" name="trestbps" required value="{{ form_data.get('trestbps', '') }}">
+            <label>Cholesterol (chol) <button type="button" class="desc-btn" onclick="showDescription('chol')">?</button></label><input type="number" name="chol" required value="{{ form_data.get('chol', '') }}">
+            <label>Fasting Blood Sugar > 120 mg/dl (fbs) <button type="button" class="desc-btn" onclick="showDescription('fbs')">?</button></label><input type="number" name="fbs" min="0" max="1" required value="{{ form_data.get('fbs', '') }}">
+            <label>Resting ECG (restecg) <button type="button" class="desc-btn" onclick="showDescription('restecg')">?</button></label><input type="number" name="restecg" min="0" max="2" required value="{{ form_data.get('restecg', '') }}">
+            <label>Max Heart Rate (thalach) <button type="button" class="desc-btn" onclick="showDescription('thalach')">?</button></label><input type="number" name="thalach" required value="{{ form_data.get('thalach', '') }}">
+            <label>Exercise Induced Angina (exang) <button type="button" class="desc-btn" onclick="showDescription('exang')">?</button></label><input type="number" name="exang" min="0" max="1" required value="{{ form_data.get('exang', '') }}">
+            <label>Oldpeak <button type="button" class="desc-btn" onclick="showDescription('oldpeak')">?</button></label><input type="number" step="any" name="oldpeak" required value="{{ form_data.get('oldpeak', '') }}">
+            <label>Slope <button type="button" class="desc-btn" onclick="showDescription('slope')">?</button></label><input type="number" name="slope" min="0" max="2" required value="{{ form_data.get('slope', '') }}">
+            <label>CA (Number of major vessels) <button type="button" class="desc-btn" onclick="showDescription('ca')">?</button></label><input type="number" name="ca" min="0" max="3" required value="{{ form_data.get('ca', '') }}">
+            <label>Thal <button type="button" class="desc-btn" onclick="showDescription('thal')">?</button></label><input type="number" name="thal" min="0" max="3" required value="{{ form_data.get('thal', '') }}">
+            <button type="submit">Predict</button>
+            <button type="submit" name="reset" value="1">Reset</button>
+        </form>
+    {% if show_prediction %}
+    <div class="result">
+        <strong>Prediction:</strong> {{ label }}<br>
+        <strong>Risk Score (Probability):</strong> {{ '%.2f'|format(risk) }}
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
