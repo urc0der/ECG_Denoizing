@@ -2,17 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Heart Disease Risk Prediction</title>
+    <title>HeartWell</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
     <script src="/static/field_descriptions.js"></script>
+    <!-- Favicon Icon -->
+    <link rel="icon" href="/static/heart-ecg-line.png">
     <!-- Bootstrap JS (for modal, if needed) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="container">
-    <h2>Heart Disease Risk Prediction</h2>
+    <header class="text-center my-4">
+        <h2>Heart Disease Risk Prediction</h2>
+        <a href="https://github.com/hrsha03/heart-well" target="_blank" class="btn btn-primary">View Documentation on GitHub</a>
+    </header>
     <form method="post" id="predictForm" autocomplete="off">
         <div class="mb-3">
             <label class="form-label">Age <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'age')" onmouseleave="hideDescription()">?</button></label>
@@ -20,7 +25,11 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Sex (1=Male, 0=Female) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'sex')" onmouseleave="hideDescription()">?</button></label>
-            <input type="number" class="form-control" name="sex" min="0" max="1" required value="{{ form_data.get('sex', '') }}">
+            <select class="form-select" name="sex" required>
+                <option value="" disabled selected>- Select -</option>
+                <option value="1" {% if form_data.get('sex') == '1' %}selected{% endif %}>Male</option>
+                <option value="0" {% if form_data.get('sex') == '0' %}selected{% endif %}>Female</option>
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Chest Pain Type (cp) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'cp')" onmouseleave="hideDescription()">?</button></label>
@@ -36,11 +45,20 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Fasting Blood Sugar > 120 mg/dl (fbs) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'fbs')" onmouseleave="hideDescription()">?</button></label>
-            <input type="number" class="form-control" name="fbs" min="0" max="1" required value="{{ form_data.get('fbs', '') }}">
+            <select class="form-select" name="fbs" required>
+                <option value="" disabled selected>- Select -</option>
+                <option value="1" {% if form_data.get('fbs') == '1' %}selected{% endif %}>True</option>
+                <option value="0" {% if form_data.get('fbs') == '0' %}selected{% endif %}>False</option>
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Resting ECG (restecg) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'restecg')" onmouseleave="hideDescription()">?</button></label>
-            <input type="number" class="form-control" name="restecg" min="0" max="2" required value="{{ form_data.get('restecg', '') }}">
+            <select class="form-select" name="restecg" required>
+                <option value="" disabled selected>- Select -</option>
+                <option value="0" {% if form_data.get('restecg') == '0' %}selected{% endif %}>Normal</option>
+                <option value="1" {% if form_data.get('restecg') == '1' %}selected{% endif %}>ST-T wave abnormality</option>
+                <option value="2" {% if form_data.get('restecg') == '2' %}selected{% endif %}>Left ventricular hypertrophy</option>
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Max Heart Rate (thalach) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'thalach')" onmouseleave="hideDescription()">?</button></label>
@@ -48,7 +66,11 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Exercise Induced Angina (exang) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'exang')" onmouseleave="hideDescription()">?</button></label>
-            <input type="number" class="form-control" name="exang" min="0" max="1" required value="{{ form_data.get('exang', '') }}">
+            <select class="form-select" name="exang" required>
+                <option value="" disabled selected>- Select -</option>
+                <option value="1" {% if form_data.get('exang') == '1' %}selected{% endif %}>Yes</option>
+                <option value="0" {% if form_data.get('exang') == '0' %}selected{% endif %}>No</option>
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Oldpeak <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'oldpeak')" onmouseleave="hideDescription()">?</button></label>
@@ -56,16 +78,33 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Slope <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'slope')" onmouseleave="hideDescription()">?</button></label>
-            <input type="number" class="form-control" name="slope" min="0" max="2" required value="{{ form_data.get('slope', '') }}">
+            <select class="form-select" name="slope" required>
+                <option value="" disabled selected>- Select -</option>
+                <option value="0" {% if form_data.get('slope') == '0' %}selected{% endif %}>Upsloping</option>
+                <option value="1" {% if form_data.get('slope') == '1' %}selected{% endif %}>Flat</option>
+                <option value="2" {% if form_data.get('slope') == '2' %}selected{% endif %}>Downsloping</option>
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label">CA (Number of major vessels) <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'ca')" onmouseleave="hideDescription()">?</button></label>
-            <input type="number" class="form-control" name="ca" min="0" max="3" required value="{{ form_data.get('ca', '') }}">
+            <select class="form-select" name="ca" required>
+                <option value="" disabled selected>- Select -</option>
+                <option value="0" {% if form_data.get('ca') == '0' %}selected{% endif %}>0</option>
+                <option value="1" {% if form_data.get('ca') == '1' %}selected{% endif %}>1</option>
+                <option value="2" {% if form_data.get('ca') == '2' %}selected{% endif %}>2</option>
+                <option value="3" {% if form_data.get('ca') == '3' %}selected{% endif %}>3</option>
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Thal <button type="button" class="desc-btn" onmouseenter="showDescription(event, 'thal')" onmouseleave="hideDescription()">?</button></label>
     <div id="descTooltip" class="desc-tooltip"></div>
-            <input type="number" class="form-control" name="thal" min="0" max="3" required value="{{ form_data.get('thal', '') }}">
+            <select class="form-select" name="thal" required>
+                <option value="" disabled selected>- Select -</option>
+                <option value="0" {% if form_data.get('thal') == '0' %}selected{% endif %}>Unknown</option>
+                <option value="1" {% if form_data.get('thal') == '1' %}selected{% endif %}>Normal</option>
+                <option value="2" {% if form_data.get('thal') == '2' %}selected{% endif %}>Fixed defect</option>
+                <option value="3" {% if form_data.get('thal') == '3' %}selected{% endif %}>Reversible defect</option>
+            </select>
         </div>
         <div class="d-flex justify-content-between mt-4">
             <button type="submit" class="btn btn-primary">Predict</button>
