@@ -32,7 +32,7 @@ function hideDescription() {
 }
 
 document.getElementById('predictForm').addEventListener('reset', function(event) {
-    event.preventDefault(); // Prevent default reset behavior
+    event.preventDefault(); 
     const form = event.target;
     Array.from(form.elements).forEach(element => {
         if (element.type === 'number' || element.type === 'text') {

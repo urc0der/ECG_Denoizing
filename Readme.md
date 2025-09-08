@@ -70,3 +70,37 @@ This project uses three datasets to train and evaluate machine learning models f
 - Dataset-1 is chosen for making predictions due to its large volume and better model performance
 - Random Forest model has been implemented on Dataset-1 due to its consistent performance
 - Most important features were identified cooresponding to this model
+
+## Future Work
+
+### Integration with IoT and ECG Sensors
+
+To enhance the application, the following fields can be inferred or measured using IoT-enabled ECG sensors:
+
+1. **Resting ECG (`restecg`)**:
+   - Captured directly from ECG sensors to classify as normal, ST-T wave abnormality, or left ventricular hypertrophy.
+
+2. **Oldpeak**:
+   - Derived from ST depression measurements during exercise relative to rest.
+
+3. **Slope**:
+   - Determined from the behavior of the ST segment during physical activity.
+
+4. **Max Heart Rate (`thalach`)**:
+   - Measured directly as the maximum heart rate achieved during exercise.
+
+5. **Exercise Induced Angina (`exang`)**:
+   - Inferred from ischemic changes detected in ECG patterns during exercise.
+
+### Additional Enhancements
+- **Real-time Data Integration**:
+  - Use IoT devices to stream real-time ECG data to the application.
+  - Implement APIs or MQTT protocols for seamless data transfer.
+
+- **Machine Learning Models**:
+  - Train models on ECG data to infer fields like `exang` and `slope` with higher accuracy.
+
+- **Advanced Metrics**:
+  - Incorporate Heart Rate Variability (HRV) and other ECG-derived metrics for deeper insights into cardiac health.
+
+This future work aims to integrate IoT capabilities, enabling real-time and automated data collection for improved predictions and patient monitoring.
