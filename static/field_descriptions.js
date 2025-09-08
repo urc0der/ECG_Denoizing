@@ -21,7 +21,6 @@ function showDescription(event, field) {
     tooltip.style.display = 'block';
     var rect = event.target.getBoundingClientRect();
     var scrollY = window.scrollY || window.pageYOffset;
-    // Position to the immediate right of the button
     tooltip.style.left = (rect.right + 8) + 'px';
     tooltip.style.top = (rect.top + scrollY) + 'px';
 }
